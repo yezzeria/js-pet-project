@@ -5,7 +5,7 @@ import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL), //import.meta.env.BASE_URL
+  history: createWebHistory(import.meta.env.BASE_URL), //import.meta.env.BASE_URL
   routes: [
     {
       path: '/',
