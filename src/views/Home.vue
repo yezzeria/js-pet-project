@@ -6,7 +6,7 @@
     </div>
     <button @click="clearLocalStorageAndGoToAuth">Выйти</button>
   </nav>
-  <div>
+  <div v-cloak>
     <h1>Users</h1>
     <br />
     <ul class="user-list">
@@ -98,5 +98,8 @@ h1 {
   border-radius: 8px;
   text-align: center;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+}
+[v-cloak] {
+  display: none;
 }
 </style>

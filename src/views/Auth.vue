@@ -56,6 +56,10 @@ export default {
   border-radius: 8px;
   text-align: center;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .form {

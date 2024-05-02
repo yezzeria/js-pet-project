@@ -5,12 +5,13 @@ import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(process.env.BASE_URL), //import.meta.env.BASE_URL
   routes: [
     {
       path: '/',
       name: 'app',
-      component: App
+      component: App,
+      meta: { requiresAuth: true }
     },
     {
       path: '/auth',
@@ -40,15 +41,23 @@ router.beforeEach((to, from, next) => {
 
     const isAuthenticated = !!localStorage.getItem('email')
     if (!isAuthenticated) {
-
       next({ name: 'auth' })
     } else {
 
-      next()
+      if (to.name === 'auth' || to.name === 'app') {
+
+        next({ name: 'home' })
+      } else {
+        next()
+      }
     }
   } else {
-
-    next()
+    const isAuthenticated = !!localStorage.getItem('email')
+    if (isAuthenticated) {
+      next({ name: 'home' })
+    } else {
+      next()
+    }
   }
 })
 
