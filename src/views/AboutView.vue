@@ -4,6 +4,7 @@ export default {
 
   methods: {
     clearLocalStorageAndGoToAuth() {
+      console.log("test");
       delete localStorage.email;
       this.$router.push({ name: "auth" });
     },
