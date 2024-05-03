@@ -1,10 +1,23 @@
+<script>
+export default {
+  name: "AboutView",
+
+  methods: {
+    clearLocalStorageAndGoToAuth() {
+      delete localStorage.email;
+      this.$router.push({ name: "auth" });
+    },
+  },
+};
+</script>
+
 <template>
   <nav>
     <div>
       <RouterLink to="/home">Home</RouterLink>
       <RouterLink to="/about">About</RouterLink>
     </div>
-    <button @click="clearLocalStorageAndGoToAuth">Выйти</button>
+    <button type="button" @click="clearLocalStorageAndGoToAuth">Выйти</button>
   </nav>
 
   <div class="about">
@@ -15,17 +28,6 @@
     />
   </div>
 </template>
-
-<script>
-export default {
-  methods: {
-    clearLocalStorageAndGoToAuth() {
-      delete localStorage.email
-      this.$router.push({ name: 'auth' })
-    }
-  }
-}
-</script>
 
 <style scoped>
 nav {

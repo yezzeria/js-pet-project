@@ -1,64 +1,58 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import App from '../App.vue'
-import Auth from '../views/Auth.vue'
-import Home from '../views/Home.vue'
-import About from '../views/About.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import App from "../App.vue";
+import Auth from "../views/AuthView.vue";
+import Home from "../views/HomeView.vue";
+import About from "../views/AboutView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL), //import.meta.env.BASE_URL
   routes: [
     {
-      path: '/',
-      name: 'app',
+      path: "/",
+      name: "app",
       component: App,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
     },
     {
-      path: '/auth',
-      name: 'auth',
-      component: Auth
+      path: "/auth",
+      name: "auth",
+      component: Auth,
     },
     {
-      path: '/home',
-      name: 'home',
+      path: "/home",
+      name: "home",
       component: Home,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
     },
     {
-      path: '/about',
-      name: 'about',
+      path: "/about",
+      name: "about",
       component: About,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
     },
-
-    
-  ]
-})
+  ],
+});
 
 router.beforeEach((to, from, next) => {
-
   if (to.meta.requiresAuth) {
-
-    const isAuthenticated = !!localStorage.getItem('email')
+    const isAuthenticated = !!localStorage.getItem("email");
     if (!isAuthenticated) {
-      next({ name: 'auth' })
+      next({ name: "auth" });
     } else {
-
-      if (to.name === 'auth' || to.name === 'app') {
-
-        next({ name: 'home' })
+      if (to.name === "auth" || to.name === "app") {
+        next({ name: "home" });
       } else {
-        next()
+        next();
       }
     }
   } else {
-    const isAuthenticated = !!localStorage.getItem('email')
+    const isAuthenticated = !!localStorage.getItem("email");
     if (isAuthenticated) {
-      next({ name: 'home' })
+      next({ name: "home" });
     } else {
-      next()
+      next();
     }
   }
-})
+});
 
-export default router
+export default router;

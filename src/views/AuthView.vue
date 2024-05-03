@@ -1,25 +1,30 @@
-<script >
+<script>
 export default {
+  name: "AuthView",
+
   data() {
     return {
-      email: '',
-      password: ''
-    }
+      email: "",
+      password: "",
+    };
   },
+
   methods: {
     submitForm() {
-      localStorage.setItem('email', this.email)
-      this.$router.push({ name: 'home' })
+      localStorage.setItem("email", this.email);
+      this.$router.push({ name: "home" });
     },
+
     validateEmail() {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      return emailRegex.test(this.email)
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(this.email);
     },
+
     validatePassword() {
-      return this.password.length >= 8 && !this.password.includes(' ')
-    }
-  }
-}
+      return this.password.length >= 8 && !this.password.includes(" ");
+    },
+  },
+};
 </script>
 
 <template>
@@ -27,14 +32,27 @@ export default {
     <form action="" @submit.prevent="submitForm">
       <div class="input-group">
         <label for="email">Email</label>
-        <input type="text" name="email" v-model="email" @input="validateEmail" />
+        <input
+          v-model="email"
+          type="text"
+          name="email"
+          @input="validateEmail"
+        />
       </div>
       <div class="input-group">
         <label for="password">Пароль</label>
-        <input type="password" name="password" v-model="password" @input="validatePassword" />
+        <input
+          v-model="password"
+          type="password"
+          name="password"
+          @input="validatePassword"
+        />
       </div>
-
-      <button type="submit" class="btn" :disabled="!validateEmail() || !validatePassword()">
+      <button
+        type="submit"
+        class="btn"
+        :disabled="!validateEmail() || !validatePassword()"
+      >
         Войти
       </button>
     </form>
