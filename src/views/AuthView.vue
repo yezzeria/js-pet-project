@@ -54,14 +54,7 @@ export default {
 </template>
 
 <style>
-#app {
-  display: flex;
-  padding: 0;
-  align-items: center;
-  justify-content: center;
-}
-
-.auth-box {
+.auth-view {
   background: orange;
   width: 300px;
   padding: 20px;
