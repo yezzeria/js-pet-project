@@ -23,7 +23,7 @@ export default {
 
     validateEmail() {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      this.isEmailValid = !emailRegex.test(this.email);
+      return emailRegex.test(this.email);
     },
 
     validatePassword() {
@@ -53,8 +53,15 @@ export default {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.auth-view {
+<style>
+#app {
+  display: flex;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-box {
   background: orange;
   width: 300px;
   padding: 20px;
