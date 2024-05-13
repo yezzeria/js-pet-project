@@ -23,7 +23,7 @@ export default {
 
     validateEmail() {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return !emailRegex.test(this.email);
+      this.isEmailValid = !emailRegex.test(this.email);
     },
 
     validatePassword() {
