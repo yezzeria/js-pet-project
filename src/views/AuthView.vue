@@ -53,7 +53,7 @@ export default {
   </div>
 </template>
 
-<style>
+<style lang="scss" scoped>
 .auth-view {
   background: orange;
   width: 300px;
