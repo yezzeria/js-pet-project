@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
-import API from "@/package/config/axios.js";
+import { apiGetPosts } from "@/api/post.api.js";
 
 export const useUserStore = defineStore("user-store", {
   state: () => ({
     posts: [],
   }),
   actions: {
-    getPosts() {
-      API.get("https://jsonplaceholder.typicode.com/posts")
+    getPosts(search = undefined) {
+      apiGetPosts(search)
         .then((response) => {
           this.posts = response.data;
         })

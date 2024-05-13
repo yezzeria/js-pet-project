@@ -19,18 +19,19 @@ const router = createRouter({
           name: "AboutMeView",
           component: () => import("@/views/AboutView.vue"),
         },
-        {
-          path: "/:pathMatch(.*)*",
-          name: "NotFound",
-          component: () => import("@/views/NotFound.vue"),
-          meta: { title: "404 Not Found" },
-        },
       ],
     },
     {
       path: "/auth",
       name: "Auth",
       component: () => import("@/views/AuthView.vue"),
+    },
+    {
+      // поднять на уровень layout
+      path: "/:pathMatch(.*)*",
+      name: "NotFound",
+      component: () => import("@/views/NotFound.vue"),
+      meta: { title: "404 Not Found" },
     },
   ],
 });

@@ -1,29 +1,72 @@
-<script setup>
-defineOptions({
+<script>
+export default {
   name: "UiInput",
+  emits: ["update:modelValue", "inputChange"],
 
-  data() {
-    return { inputValue: "" };
+  props: {
+    type: {
+      type: String,
+      default: "text",
+    },
+
+    modelValue: {
+      type: String,
+      default: "text",
+    },
+
+    label: {
+      type: String,
+      default: "",
+    },
+
+    id: {
+      type: String,
+      default: () => Math.random().toString(36).substring(2, 8),
+    },
   },
-});
-defineProps({ type: String, func: Function });
 
-const model = defineModel();
+  computed: {
+    _modelValue: {
+      get() {
+        return this.modelValue;
+      },
+
+      set(value) {
+        this.$emit("update:modelValue", value);
+      },
+    },
+  },
+};
 </script>
 
 <template>
-  <label v-if="type === 'text'" for="{{ type }}">Поиск</label>
-  <label v-else-if="type === 'email'" for="{{ type }}">Email</label>
-  <label v-else for="{{ type }}"> Пароль</label>
-  <input :id="type" v-model.trim="model" :type="type" @input="func" />
+  <div class="ui-input">
+    <label :for="id">{{ label }}</label>
+
+    <input
+      :id="id"
+      v-model="_modelValue"
+      :type="type"
+      @input="$emit('inputChange', $event.target.value)"
+    />
+  </div>
 </template>
 
 <style lang="scss" scoped>
-label {
-  width: 70px;
-  margin-right: 10px;
-}
-input {
-  border: solid 1px #ccc;
+.ui-input {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+  > label {
+    width: 70px;
+    margin-right: 10px;
+  }
+  > input {
+    height: 30px;
+    padding: 5px;
+    border: solid 1px #ccc;
+  }
 }
 </style>

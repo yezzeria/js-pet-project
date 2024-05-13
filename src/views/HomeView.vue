@@ -14,6 +14,10 @@ export default {
 
   methods: {
     useUserStore,
+
+    inputChangeHandler(value) {
+      useUserStore().getPosts(value);
+    },
   },
 
   mounted() {
@@ -26,7 +30,12 @@ export default {
   <div class="home-view">
     <h1>Posts</h1>
     <br />
-    <UiInput v-model="searchValue" type="text" />
+    <UiInput
+      v-model="searchValue"
+      type="text"
+      label="Поиск по post Id"
+      @inputChange="inputChangeHandler"
+    />
     <br /><br />
     <table class="home-view__table">
       <thead>

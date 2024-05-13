@@ -22,11 +22,13 @@ export default {
     },
 
     validateEmail() {
+      console.log(this.email);
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       this.isEmailValid = !emailRegex.test(this.email);
     },
 
     validatePassword() {
+      console.log(this.password);
       this.isPasswordValid = !(this.password.length >= 8);
     },
   },
@@ -45,10 +47,20 @@ export default {
   <div class="auth-view">
     <form class="input-form" @submit.prevent="submitForm">
       <div class="input-form__item">
-        <UiInput v-model="email" type="email" :func="validateEmail" />
+        <UiInput
+          v-model="email"
+          type="email"
+          label="Email"
+          @inputChange="validateEmail"
+        />
       </div>
       <div class="input-form__item">
-        <UiInput v-model="password" type="password" :func="validatePassword" />
+        <UiInput
+          v-model="password"
+          type="password"
+          label="Пароль"
+          @inputChange="validatePassword"
+        />
       </div>
       <UiButton :disabled="isFormDisabled" />
     </form>
