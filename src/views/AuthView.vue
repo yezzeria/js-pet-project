@@ -1,73 +1,60 @@
 <script>
+import UiInput from "@/ui/UiInput.vue";
+import UiButton from "@/ui/UiButton.vue";
 export default {
   name: "AuthView",
+  components: { UiInput, UiButton },
 
   data() {
     return {
       email: "",
       password: "",
+
+      isEmailValid: true,
+      isPasswordValid: true,
     };
   },
 
   methods: {
     submitForm() {
       localStorage.setItem("email", this.email);
-      this.$router.push({ name: "home" });
+      this.$router.push({ name: "HomeView" });
     },
 
     validateEmail() {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(this.email);
+      this.isEmailValid = !emailRegex.test(this.email);
     },
 
     validatePassword() {
-      return this.password.length >= 8 && !this.password.includes(" ");
+      this.isPasswordValid = !(this.password.length >= 8);
+    },
+  },
+
+  computed: {
+    isFormDisabled() {
+      return this.isEmailValid || this.isPasswordValid;
     },
   },
 };
 </script>
 
 <template>
-  <div class="auth-box">
-    <form action="" @submit.prevent="submitForm">
-      <div class="input-group">
-        <label for="email">Email</label>
-        <input
-          v-model="email"
-          type="text"
-          name="email"
-          @input="validateEmail"
-        />
+  <div class="auth-view">
+    <form class="input-form" @submit.prevent="submitForm">
+      <div class="input-form__item">
+        <UiInput v-model="email" type="email" :func="validateEmail" />
       </div>
-      <div class="input-group">
-        <label for="password">Пароль</label>
-        <input
-          v-model="password"
-          type="password"
-          name="password"
-          @input="validatePassword"
-        />
+      <div class="input-form__item">
+        <UiInput v-model="password" type="password" :func="validatePassword" />
       </div>
-      <button
-        type="submit"
-        class="btn"
-        :disabled="!validateEmail() || !validatePassword()"
-      >
-        Войти
-      </button>
+      <UiButton :disabled="isFormDisabled" />
     </form>
   </div>
 </template>
 
-<style>
-#app {
-  display: flex;
-  padding: 0;
-  align-items: center;
-  justify-content: center;
-}
-
-.auth-box {
+<style lang="scss" scoped>
+.auth-view {
   background: orange;
   width: 300px;
   padding: 20px;
@@ -78,39 +65,17 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
 
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  .input-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-.input-group {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.input-group label {
-  width: 70px;
-  margin-right: 10px;
-}
-
-.btn {
-  background-color: white;
-  color: black;
-  padding: 6px 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-  transition: background-color 0.3s;
-}
-.btn:disabled {
-  border: 1px solid #999999;
-  background-color: #cccccc;
-  color: #666666;
-  cursor: not-allowed;
+    &__item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+  }
 }
 </style>

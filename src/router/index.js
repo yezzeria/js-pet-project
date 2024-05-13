@@ -1,57 +1,46 @@
 import { createRouter, createWebHistory } from "vue-router";
-import App from "../App.vue";
-import Auth from "../views/AuthView.vue";
-import Home from "../views/HomeView.vue";
-import About from "../views/AboutView.vue";
+import MainLayout from "../layouts/MainLayout.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL), //import.meta.env.BASE_URL
   routes: [
     {
       path: "/",
-      name: "app",
-      component: App,
-      meta: { requiresAuth: true },
+      name: "MainLayout",
+      component: MainLayout,
+      children: [
+        {
+          path: "/",
+          name: "HomeView",
+          component: () => import("@/views/HomeView.vue"),
+        },
+        {
+          path: "/about",
+          name: "AboutMeView",
+          component: () => import("@/views/AboutView.vue"),
+        },
+        {
+          path: "/:pathMatch(.*)*",
+          name: "NotFound",
+          component: () => import("@/views/NotFound.vue"),
+          meta: { title: "404 Not Found" },
+        },
+      ],
     },
     {
       path: "/auth",
-      name: "auth",
-      component: Auth,
-    },
-    {
-      path: "/home",
-      name: "home",
-      component: Home,
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/about",
-      name: "about",
-      component: About,
-      meta: { requiresAuth: true },
+      name: "Auth",
+      component: () => import("@/views/AuthView.vue"),
     },
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth) {
-    const isAuthenticated = !!localStorage.getItem("email");
-    if (!isAuthenticated) {
-      next({ name: "auth" });
-    } else {
-      if (to.name === "auth" || to.name === "app") {
-        next({ name: "home" });
-      } else {
-        next();
-      }
-    }
-  } else {
-    const isAuthenticated = !!localStorage.getItem("email");
-    if (isAuthenticated) {
-      next({ name: "home" });
-    } else {
-      next();
-    }
+router.beforeEach((to) => {
+  const currentEmail = localStorage.getItem("email");
+  if (currentEmail && to.name === "AuthView") {
+    return { name: "HomeView" };
+  } else if (!currentEmail && to.name === "HomeView") {
+    return { name: "Auth" };
   }
 });
 

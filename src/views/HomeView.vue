@@ -1,110 +1,82 @@
 <script>
-import axios from "axios";
 import { useUserStore } from "@/stores/users";
+import UiInput from "@/ui/UiInput.vue";
 
 export default {
   name: "HomeView",
+  components: { UiInput },
 
   data() {
     return {
-      users: [],
+      searchValue: "",
     };
   },
 
   methods: {
-    clearLocalStorageAndGoToAuth() {
-      delete localStorage.email;
-      this.$router.push({ name: "auth" });
-    },
-
-    getPosts() {
-      axios
-        .get("https://jsonplaceholder.typicode.com/users")
-        .then((response) => {
-          const userStore = useUserStore();
-          userStore.fetchUsers(response.data);
-
-          this.setUsers();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-
-    setUsers() {
-      const userStore = useUserStore();
-      this.users = userStore.users;
-    },
+    useUserStore,
   },
 
   mounted() {
-    this.getPosts();
+    useUserStore().getPosts();
   },
 };
 </script>
 
 <template>
-  <nav>
-    <div>
-      <RouterLink to="/home">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-    </div>
-    <button type="button" @click="clearLocalStorageAndGoToAuth">Выйти</button>
-  </nav>
-  <div v-cloak>
-    <h1>Users</h1>
+  <div class="home-view">
+    <h1>Posts</h1>
     <br />
-    <ul class="user-list">
-      <li v-for="user in users" :key="user.id" class="user-box">
-        <div><strong>Id:</strong> {{ user.id }}</div>
-        <div><strong>Name:</strong> {{ user.name }}</div>
-        <div><strong>Email:</strong> {{ user.email }}</div>
-        <div><strong>Phone:</strong> {{ user.phone }}</div>
-      </li>
-    </ul>
+    <UiInput v-model="searchValue" type="text" />
+    <br /><br />
+    <table class="home-view__table">
+      <thead>
+        <tr>
+          <th>User id</th>
+          <th>id</th>
+          <th>Title</th>
+          <th>Post</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="post in useUserStore().posts" :key="post.userId">
+          <td>{{ post.userId }}</td>
+          <td>{{ post.id }}</td>
+          <td>{{ post.title }}</td>
+          <td>{{ post.body }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
-<style scoped>
-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #f0f0f0;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
-nav div {
-  display: flex;
-  gap: 20px;
-}
-
-h1 {
-  margin-top: 50px;
+<style lang="scss" scoped>
+.home-view {
   text-align: center;
-}
-
-.user-list {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.user-box {
-  list-style: none;
-  background: orange;
-  width: 300px;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-}
-[v-cloak] {
-  display: none;
+  padding-top: 60px;
+  &__table {
+    width: 60%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    th,
+    td {
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+    thead {
+      position: sticky;
+      top: 30px;
+    }
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+      text-align: left;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    tr:hover {
+      background-color: #ddd;
+    }
+  }
 }
 </style>
