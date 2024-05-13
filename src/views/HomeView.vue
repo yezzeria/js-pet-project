@@ -1,5 +1,5 @@
 <script>
-import { useUserStore } from "@/stores/users";
+import { useUserStore } from "@/stores/posts.js";
 import UiInput from "@/ui/UiInput.vue";
 
 export default {
